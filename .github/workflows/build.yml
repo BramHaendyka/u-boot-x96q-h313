@@ -14,8 +14,8 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    - name: Clone U-Boot
-      run: git clone https://source.denx.de/u-boot/u-boot.git
+    - name: Clone U-Boot from GitHub
+      run: git clone https://github.com/u-boot/u-boot.git
 
     - name: Checkout U-Boot Stable Version
       run: |
