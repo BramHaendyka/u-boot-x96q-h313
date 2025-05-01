@@ -38,7 +38,8 @@ jobs:
         make -j$(nproc)
 
     - name: Upload u-boot-sunxi-with-spl.bin
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: u-boot-x96q-h313
         path: u-boot/u-boot-sunxi-with-spl.bin
+        if-no-files-found: error
