@@ -1,0 +1,44 @@
+name: Build U-Boot for X96Q H313
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.patch'
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Clone U-Boot
+      run: git clone https://source.denx.de/u-boot/u-boot.git
+
+    - name: Checkout U-Boot Stable Version
+      run: |
+        cd u-boot
+        git checkout v2024.01
+
+    - name: Apply Patch
+      run: |
+        cp arm64-sun50i-h313-add-x96q-lpddr3-defconfig.patch u-boot/
+        cd u-boot
+        git apply arm64-sun50i-h313-add-x96q-lpddr3-defconfig.patch
+
+    - name: Install Dependencies & Build U-Boot
+      run: |
+        sudo apt update
+        sudo apt install -y gcc-aarch64-linux-gnu build-essential device-tree-compiler bison flex libssl-dev
+        cd u-boot
+        export CROSS_COMPILE=aarch64-linux-gnu-
+        make x96q_lpddr3_defconfig
+        make -j$(nproc)
+
+    - name: Upload u-boot-sunxi-with-spl.bin
+      uses: actions/upload-artifact@v3
+      with:
+        name: u-boot-x96q-h313
+        path: u-boot/u-boot-sunxi-with-spl.bin
