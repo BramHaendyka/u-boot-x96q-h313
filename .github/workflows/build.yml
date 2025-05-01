@@ -14,13 +14,8 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    - name: Clone U-Boot from GitHub
-      run: git clone https://github.com/u-boot/u-boot.git
-
-    - name: Checkout U-Boot Stable Version
-      run: |
-        cd u-boot
-        git checkout v2024.01
+    - name: Clone U-Boot from GitHub at tag v2024.01
+      run: git clone --branch v2024.01 https://github.com/u-boot/u-boot.git
 
     - name: Apply Patch
       run: |
